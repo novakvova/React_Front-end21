@@ -1,53 +1,43 @@
-
-import car1 from '../../assets/1.jpg';
-import car2 from '../../assets/2.jpg';
-import car3 from '../../assets/3.jpg';
+import { useState } from "react";
+import Slider from "./Slider";
+import { ICategoryItem } from "./types";
 
 const HomePage = () => {
+  const [list, setList] = useState<ICategoryItem[]>([
+    {
+      id: 1,
+      name: "Ноутбуки",
+      image:
+        "https://cdn.thewirecutter.com/wp-content/media/2022/10/laptopstopicpage-2048px-2029.jpg",
+    },
+  ]);
+
+  const viewList = list.map((item) => (
+    <tr key={item.id}>
+      <th scope="row">{item.id}</th>
+      <td>
+        <img src={item.image} alt="Якась фотка" width="75" />
+      </td>
+      <td>{item.name}</td>
+    </tr>
+  ));
+
   return (
     <>
-      <div
-        id="carouselExampleControls"
-        className="carousel slide"
-        data-bs-ride="carousel"
-      >
-        <div className="carousel-inner">
-          <div className="carousel-item active">
-            <img src={car1} className="d-block w-100" alt="..." />
-          </div>
-          <div className="carousel-item">
-            <img src={car2} className="d-block w-100" alt="..." />
-          </div>
-          <div className="carousel-item">
-            <img src={car3} className="d-block w-100" alt="..." />
-          </div>
-        </div>
-        <button
-          className="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselExampleControls"
-          data-bs-slide="prev"
-        >
-          <span
-            className="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-        <button
-          className="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselExampleControls"
-          data-bs-slide="next"
-        >
-          <span
-            className="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Next</span>
-        </button>
-      </div>
+      <Slider />
       <h1 className="text-center">Головна сторінка</h1>
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Фото</th>
+            <th scope="col">Назва</th>
+          </tr>
+        </thead>
+        <tbody>
+          {viewList}
+        </tbody>
+      </table>
     </>
   );
 };
