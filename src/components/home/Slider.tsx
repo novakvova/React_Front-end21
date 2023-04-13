@@ -1,8 +1,22 @@
+import classNames from "classnames";
+import { useState } from "react";
 import car1 from "../../assets/1.jpg";
 import car2 from "../../assets/2.jpg";
 import car3 from "../../assets/3.jpg";
 
+interface ICarusel {
+  img: any;
+}
+
 const Slider = () => {
+  const [items, setItems] = useState<ICarusel[]>([
+    { img: car1 },
+    { img: car2 },
+    { img: car3 },
+  ]);
+
+  console.log("cars");
+
   return (
     <>
       <div
@@ -11,15 +25,13 @@ const Slider = () => {
         data-bs-ride="carousel"
       >
         <div className="carousel-inner">
-          <div className="carousel-item active">
-            <img src={car1} className="d-block w-100" alt="..." />
-          </div>
-          <div className="carousel-item">
-            <img src={car2} className="d-block w-100" alt="..." />
-          </div>
-          <div className="carousel-item">
-            <img src={car3} className="d-block w-100" alt="..." />
-          </div>
+          {items.map((item, index) => (
+            <div
+              className={classNames("carousel-item", {"active": index===1})}
+            >
+              <img src={item.img} className="d-block w-100" alt="..." />
+            </div>
+          ))}
         </div>
         <button
           className="carousel-control-prev"
