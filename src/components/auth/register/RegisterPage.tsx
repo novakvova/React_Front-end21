@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import InputFileGroup from "../../common/InputFileGroup";
 import InputGroup from "../../common/InputGroup";
 import { IRegisterPage, ISelectItem } from "./types";
 
@@ -47,17 +48,7 @@ const RegisterPage = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const onChangeFileHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const file = files[0];
-      console.log("Ви обрали файл", file);
-      setData({ ...data, [e.target.name]: file });
-    }
-    e.target.value = "";
-  };
-
-  const viewCountriesOption = countries.map((country, index) => (
+   const viewCountriesOption = countries.map((country, index) => (
     <option key={index} value={country.id}>
       {country.name}
     </option>
@@ -66,7 +57,6 @@ const RegisterPage = () => {
     <>
       <h1 className="text-center">Реєстрація на сайт</h1>
       <form onSubmit={onSubmitHandler} className="col-md-6 offset-md-3">
-        
         <InputGroup
           label="Електронна адреса"
           field="email"
@@ -89,31 +79,22 @@ const RegisterPage = () => {
           </select>
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="image" className="form-label">
-            {data.image == null ? (
-              <img
-                src="https://i.insider.com/63fb81d984099d001960d513?width=1136&format=jpeg"
-                style={{ cursor: "pointer" }}
-                width="200"
-              />
-            ) : (
-              <img
-                src={URL.createObjectURL(data.image)}
-                style={{ cursor: "pointer" }}
-                width="200"
-              />
-            )}
-          </label>
-          
-          <input
-            type="file"
-            className="d-none"
-            id="image"
-            name="image"
-            onChange={onChangeFileHandler}
-          />
-        </div>
+        <InputFileGroup
+          label="Оберіть фото для аватар"
+          field="image"
+          onSelectFile={(file) => {
+            setData({ ...data, image: file });
+          }}
+        />
+
+        <InputFileGroup
+          label="Оберіть фото вашої подружки"
+          field="image2"
+          onSelectFile={(file) => {
+            console.log("SElect 2 File", file);
+            //setData({ ...data, image: file });
+          }}
+        />
 
         <InputGroup
           label="Пароль"
