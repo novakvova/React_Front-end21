@@ -15,7 +15,7 @@ const Slider = () => {
     { img: car3 },
   ]);
 
-  console.log("cars");
+  // console.log("cars");
 
   return (
     <>

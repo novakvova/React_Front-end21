@@ -12,15 +12,20 @@ const HomePage = () => {
     },
   ]);
 
-  const viewList = list.map((item) => (
-    <tr key={item.id}>
-      <th scope="row">{item.id}</th>
-      <td>
-        <img src={item.image} alt="Якась фотка" width="75" />
-      </td>
-      <td>{item.name}</td>
-    </tr>
-  ));
+  // map - перебирає список елементів, як foreach, але при цьому він повертає розмітку (можна використовувати return)
+  // key - є обов'язковим, тому, що коли буде порівнюватися Virtual DOM і фактичний дом на сторінці 
+  //- будуть виникати помилки по відображеню елементів, бо не буде зрозуміло, як кожен із елементів відрізняється між собою
+  const viewList = list.map((item) => {
+    return (
+      <tr key={item.id}>
+        <th scope="row">{item.id}</th>
+        <td>
+          <img src={item.image} alt="Якась фотка" width="75" />
+        </td>
+        <td>{item.name}</td>
+      </tr>
+    );
+  });
 
   return (
     <>

@@ -6,7 +6,8 @@ const DefaultLayout = () => {
     <>
       <DefaultHeader />
       <div className="container">
-        <Outlet/>
+        {/* Сюди підставляється компонет один із групи комеонетів, які відносяться до даного Layout */}
+        <Outlet/> 
       </div>
     </>
   );

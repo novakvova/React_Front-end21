@@ -80,21 +80,21 @@ const RegisterPage = () => {
         </div>
 
         <InputFileGroup
-          label="Оберіть фото для аватар"
+          // label="Оберіть фото для аватар"
           field="image"
           onSelectFile={(file) => {
             setData({ ...data, image: file });
           }}
         />
 
-        <InputFileGroup
+        {/* <InputFileGroup
           label="Оберіть фото вашої подружки"
           field="image2"
           onSelectFile={(file) => {
             console.log("SElect 2 File", file);
             //setData({ ...data, image: file });
           }}
-        />
+        /> */}
 
         <InputGroup
           label="Пароль"

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import InputGroup from "../../common/InputGroup";
 import { ILoginPage } from "./types";
 
@@ -14,19 +14,19 @@ const LoginPage = () => {
     const [data, setData] = useState<ILoginPage>(init);
 
 
-    console.log("Render Login component", "------SALO----");
+    // console.log("Render Login component", "------SALO----");
 
     //console.log("Дестурктуризація", {...data, password: "123456"});
     
-    const onSubmitHandler = (e: any) => {
+    const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Ми відправляємо на сервер", data);
         //setData({email: "pylyp", password: "123456"});
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log("Щось вводити в інтпут");
-        console.log(e.target.name, e.target.value);
+        //console.log("Щось вводити в інтпут");ь
+        //console.log(e.target.name, e.target.value);
         setData({...data, [e.target.name]: e.target.value});
     }
   return (
@@ -34,10 +34,10 @@ const LoginPage = () => {
       <h1 className="text-center">Вхід на сайт</h1>
       <form onSubmit={onSubmitHandler} className="col-md-6 offset-md-3">
         <InputGroup
-          label="Електронна адреса"
-          field="email"
-          value={data.email}
-          onChange={onChangeHandler}
+           label="Електронна адреса"
+           field="email"
+           value={data.email}
+           onChange={onChangeHandler}
         />
 
         <InputGroup
