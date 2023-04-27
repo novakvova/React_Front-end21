@@ -1,16 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "./Slider";
 import { ICategoryItem } from "./types";
+import { APP_ENV } from "../../env";
+import http from "../../http_common";
 
 const HomePage = () => {
-  const [list, setList] = useState<ICategoryItem[]>([
-    {
-      id: 1,
-      name: "Ноутбуки",
-      image:
-        "https://cdn.thewirecutter.com/wp-content/media/2022/10/laptopstopicpage-2048px-2029.jpg",
-    },
-  ]);
+  const [list, setList] = useState<ICategoryItem[]>([]);
 
   // map - перебирає список елементів, як foreach, але при цьому він повертає розмітку (можна використовувати return)
   // key - є обов'язковим, тому, що коли буде порівнюватися Virtual DOM і фактичний дом на сторінці 
@@ -20,13 +15,27 @@ const HomePage = () => {
       <tr key={item.id}>
         <th scope="row">{item.id}</th>
         <td>
-          <img src={item.image} alt="Якась фотка" width="75" />
+          <img src={`${APP_ENV.BASE_URL}images/150_${item.image}`} alt="Якась фотка" width="75" />
         </td>
-        <td>{item.name}</td>
+        <td>{item.title}</td>
       </tr>
     );
   });
 
+
+  useEffect(() => {
+    console.log("Working useEffect");
+    http.get<ICategoryItem[]>(`api/categories/list`)
+      .then(resp => {
+        console.log("Server responce", resp.data); 
+        const {data} = resp;
+        setList(data);
+      });
+  },[]);
+  
+  console.log("Render component", APP_ENV);
+  
+  
   return (
     <>
       <Slider />

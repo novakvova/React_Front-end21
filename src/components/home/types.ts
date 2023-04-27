@@ -1,5 +1,7 @@
 export interface ICategoryItem {
     id: number,
-    name: string,
+    title: string,
+    urlSlug: string,
+    priority: number,
     image: string
 }

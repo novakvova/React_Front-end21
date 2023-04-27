@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import http from "../../../http_common";
 import InputGroup from "../../common/InputGroup";
-import { ILoginPage } from "./types";
+import { ILoginPage, ILoginPageError } from "./types";
 
 const LoginPage = () => {
 
@@ -20,7 +21,19 @@ const LoginPage = () => {
     
     const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         console.log("Ми відправляємо на сервер", data);
+        http.post("api/account/login", data)
+          .then(resp=> {
+            console.log("Вхід успішний", resp);
+          })
+          .catch(badReqeust => {
+            //Помилки, які ідуть від сервера
+            const errors = badReqeust.response.data.errors as ILoginPageError; 
+            console.log("Вхід не успішний", badReqeust.response.data);
+            console.log("Errors ", errors);
+            
+          });
         //setData({email: "pylyp", password: "123456"});
     }
 
