@@ -2,57 +2,42 @@ import { ChangeEvent, useState } from "react";
 import InputFileGroup from "../../common/InputFileGroup";
 import InputGroup from "../../common/InputGroup";
 import { IRegisterPage, ISelectItem } from "./types";
+import http from "../../../http_common";
 
 const RegisterPage = () => {
   //створили конкретни екземлеяр на основі нашого інтерфейсу
   const init: IRegisterPage = {
     email: "",
+    firstName: "",
+    secondName: "",
+    photo: "",
+    phone: "",
     password: "",
-    image: null,
-    countryId: 0,
+    confirmPassword: "",
   };
 
   //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
   const [data, setData] = useState<IRegisterPage>(init);
 
-  const [countries, setCountries] = useState<ISelectItem[]>([
-    {
-      id: 1,
-      name: "Україна",
-    },
-    {
-      id: 2,
-      name: "Польща",
-    },
-    {
-      id: 3,
-      name: "Амерка USA",
-    },
-  ]);
-
   console.log("Render Login component", "------SALO----");
 
-  //console.log("Дестурктуризація", {...data, password: "123456"});
-
-  const onSubmitHandler = (e: any) => {
+  const onSubmitHandler = async (e: any) => {
     e.preventDefault();
     console.log("Ми відправляємо на сервер", data);
-    //setData({email: "pylyp", password: "123456"});
+    try{
+      const result = await http.post("api/account/register", data);
+      console.log("Result server good", result);
+    } catch(err: any) {
+      console.log("Bad request", err);
+    }
   };
 
   const onChangeHandler = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
   ) => {
-    //console.log("Щось вводити в інтпут");
-    //console.log(e.target.name, e.target.value);
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-   const viewCountriesOption = countries.map((country, index) => (
-    <option key={index} value={country.id}>
-      {country.name}
-    </option>
-  ));
   return (
     <>
       <h1 className="text-center">Реєстрація на сайт</h1>
@@ -64,45 +49,60 @@ const RegisterPage = () => {
           onChange={onChangeHandler}
         />
 
-        <div className="mb-3">
-          <label htmlFor="countryId" className="form-label">
-            Країна
-          </label>
-          <select
-            className="form-select"
-            name="countryId"
-            id="countryId"
-            onChange={onChangeHandler}
-          >
-            <option>Оберіть країну</option>
-            {viewCountriesOption}
-          </select>
+        <div className="row">
+          <div className="col-md-6">
+            <InputGroup
+              label="Прізвище"
+              field="secondName"
+              value={data.secondName}
+              onChange={onChangeHandler}
+            />
+          </div>
+          <div className="col-md-6">
+            <InputGroup
+              label="Ім'я"
+              field="firstName"
+              value={data.firstName}
+              onChange={onChangeHandler}
+            />
+          </div>
         </div>
 
         <InputFileGroup
-          // label="Оберіть фото для аватар"
-          field="image"
-          onSelectFile={(file) => {
-            setData({ ...data, image: file });
+          label="Оберіть фото для аватар"
+          field="photo"
+          onSelectFile={(base64) => {
+            setData({ ...data, photo: base64 });
           }}
         />
-
-        {/* <InputFileGroup
-          label="Оберіть фото вашої подружки"
-          field="image2"
-          onSelectFile={(file) => {
-            console.log("SElect 2 File", file);
-            //setData({ ...data, image: file });
-          }}
-        /> */}
 
         <InputGroup
-          label="Пароль"
-          type="password"
-          field="password"
-          value={data.password}
+          label="Телефон"
+          field="phone"
+          value={data.phone}
           onChange={onChangeHandler}
         />
+
+        <div className="row">
+          <div className="col-md-6">
+            <InputGroup
+              label="Пароль"
+              type="password"
+              field="password"
+              value={data.password}
+              onChange={onChangeHandler}
+            />
+          </div>
+          <div className="col-md-6">
+            <InputGroup
+              label="Підтвердження пароль"
+              type="password"
+              field="confirmPassword"
+              value={data.confirmPassword}
+              onChange={onChangeHandler}
+            />
+          </div>
+        </div>
 
         <button type="submit" className="btn btn-primary">
           Реєстрація

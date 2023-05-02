@@ -5,7 +5,7 @@ import "./style.css";
 interface InputFileGroupProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   field: string;
-  onSelectFile: (file: File) => void;
+  onSelectFile: (base64: string) => void;
 }
 
 const InputFileGroup: FC<InputFileGroupProps> = ({
@@ -21,7 +21,12 @@ const InputFileGroup: FC<InputFileGroupProps> = ({
       const file = files[0];
       //console.log("Ви обрали файл", file);
       setSelectImage(file);
-      onSelectFile(file); //видаю батькіському компоненту через callBack
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        onSelectFile(reader.result as string);
+      };
+      //onSelectFile(file); //видаю батькіському компоненту через callBack
     }
     e.target.value = "";
   };

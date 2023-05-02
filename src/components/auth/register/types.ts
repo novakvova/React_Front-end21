@@ -1,8 +1,12 @@
 export interface IRegisterPage {
     email: string;
-    image: File|null;
-    countryId: number;
+    firstName: string;
+    secondName: string;
+    photo: string;
+    phone: string;
     password: string;
+    confirmPassword: string;
+
   }
 
   export interface ISelectItem {
