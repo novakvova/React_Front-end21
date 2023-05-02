@@ -6,12 +6,14 @@ interface InputFileGroupProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   field: string;
   onSelectFile: (base64: string) => void;
+  errors?: string[];
 }
 
 const InputFileGroup: FC<InputFileGroupProps> = ({
   label = "Оберіть файл",
   field,
   onSelectFile,
+  errors
 }) => {
   const [selectImage, setSelectImage] = useState<File | null>(null);
 
@@ -52,6 +54,13 @@ const InputFileGroup: FC<InputFileGroupProps> = ({
         id={field}
         onChange={onChangeFileHandler}
       />
+      {errors && (
+        <div className="alert alert-danger">
+          {errors.map((err, index) => (
+            <span key={index}>{err}</span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

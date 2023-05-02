@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import InputFileGroup from "../../common/InputFileGroup";
 import InputGroup from "../../common/InputGroup";
-import { IRegisterPage, ISelectItem } from "./types";
+import { IRegisterError, IRegisterPage, ISelectItem } from "./types";
 import http from "../../../http_common";
 
 const RegisterPage = () => {
@@ -18,8 +18,7 @@ const RegisterPage = () => {
 
   //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
   const [data, setData] = useState<IRegisterPage>(init);
-
-  console.log("Render Login component", "------SALO----");
+  const [error, setError] = useState<IRegisterError>();
 
   const onSubmitHandler = async (e: any) => {
     e.preventDefault();
@@ -28,6 +27,8 @@ const RegisterPage = () => {
       const result = await http.post("api/account/register", data);
       console.log("Result server good", result);
     } catch(err: any) {
+      const error = err.response.data.errors as IRegisterError;
+      setError(error);
       console.log("Bad request", err);
     }
   };
@@ -47,6 +48,7 @@ const RegisterPage = () => {
           field="email"
           value={data.email}
           onChange={onChangeHandler}
+          errors={error?.email}
         />
 
         <div className="row">
@@ -74,6 +76,7 @@ const RegisterPage = () => {
           onSelectFile={(base64) => {
             setData({ ...data, photo: base64 });
           }}
+          errors={error?.photo}
         />
 
         <InputGroup
@@ -91,6 +94,7 @@ const RegisterPage = () => {
               field="password"
               value={data.password}
               onChange={onChangeHandler}
+              errors={error?.password}
             />
           </div>
           <div className="col-md-6">
@@ -100,6 +104,7 @@ const RegisterPage = () => {
               field="confirmPassword"
               value={data.confirmPassword}
               onChange={onChangeHandler}
+              errors={error?.confirmPassword}
             />
           </div>
         </div>
