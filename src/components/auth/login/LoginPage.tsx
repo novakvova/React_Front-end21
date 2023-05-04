@@ -1,7 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import http from "../../../http_common";
 import InputGroup from "../../common/InputGroup";
-import { ILoginPage, ILoginPageError } from "./types";
+import { ILoginPage, ILoginPageError, IUser } from "./types";
+import jwt_decode from "jwt-decode";
+import setAuthToken from "../../../helpers/setAuthToken";
 
 const LoginPage = () => {
 
@@ -25,7 +27,12 @@ const LoginPage = () => {
         console.log("Ми відправляємо на сервер", data);
         http.post("api/account/login", data)
           .then(resp=> {
-            console.log("Вхід успішний", resp);
+            const token = resp.data.token as string;
+            setAuthToken(token);
+            const user = jwt_decode<IUser>(token);
+            console.log("Вхід успішний", token);
+            console.log("Jwt decode", user);
+            
           })
           .catch(badReqeust => {
             //Помилки, які ідуть від сервера

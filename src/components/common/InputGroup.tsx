@@ -3,7 +3,7 @@ import { FC, InputHTMLAttributes } from "react";
 
 interface InputGroupProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string,
-    type?: "text"|"password"|"email",   //може не передаватися у пропсах для компонента(| - один із можливих варіатнів, які можуть буть)
+    type?: "text"|"password"|"email"|"number",   //може не передаватися у пропсах для компонента(| - один із можливих варіатнів, які можуть буть)
     field: string,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     errors?: string[]

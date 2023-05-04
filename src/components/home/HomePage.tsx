@@ -3,6 +3,7 @@ import Slider from "./Slider";
 import { ICategoryItem } from "./types";
 import { APP_ENV } from "../../env";
 import http from "../../http_common";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [list, setList] = useState<ICategoryItem[]>([]);
@@ -40,6 +41,7 @@ const HomePage = () => {
     <>
       <Slider />
       <h1 className="text-center">Головна сторінка</h1>
+      <Link to="/admin/categories/create" className="btn btn-success">Додати</Link>
       <table className="table">
         <thead>
           <tr>
