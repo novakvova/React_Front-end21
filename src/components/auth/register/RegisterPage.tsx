@@ -3,6 +3,8 @@ import InputFileGroup from "../../common/InputFileGroup";
 import InputGroup from "../../common/InputGroup";
 import { IRegisterError, IRegisterPage, ISelectItem } from "./types";
 import http from "../../../http_common";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 const RegisterPage = () => {
   //створили конкретни екземлеяр на основі нашого інтерфейсу
@@ -17,38 +19,63 @@ const RegisterPage = () => {
   };
 
   //При зміни значення елемента в useState компонент рендериться повторно і виводить нові значення
-  const [data, setData] = useState<IRegisterPage>(init);
+  // const [data, setData] = useState<IRegisterPage>(init);
   const [error, setError] = useState<IRegisterError>();
 
-  const onSubmitHandler = async (e: any) => {
-    e.preventDefault();
-    console.log("Ми відправляємо на сервер", data);
-    try{
-      const result = await http.post("api/account/register", data);
-      console.log("Result server good", result);
-    } catch(err: any) {
-      const error = err.response.data.errors as IRegisterError;
-      setError(error);
-      console.log("Bad request", err);
-    }
-  };
 
-  const onChangeHandler = (
-    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>
-  ) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
+
+  const onFormikSubmit=async (values: IRegisterPage) => {
+    console.log("Formik Submit Form to Server", values);
+     // try{
+    //   const result = await http.post("api/account/register", data);
+    //   console.log("Result server good", result);
+    // } catch(err: any) {
+    //   const error = err.response.data.errors as IRegisterError;
+    //   setError(error);
+    //   console.log("Bad request", err);
+    // }
+    
+  }
+
+  const registerSchema = yup.object({
+    email: yup.string()
+      .required("Вкажіть пошту")
+      .email("Введіть коректно пошту"),
+    firstName: yup.string().required("Вкажіть ім'я"),
+    secondName: yup.string().required("Вкажіть прізвище"),
+    photo: yup.string().required("Оберіть фото"),
+    phone: yup.string().required("Вкажіть телефон"),
+    password: yup
+      .string()
+      .min(5, "Пароль повинен містити мініму 5 символів")
+      .matches(/[0-9a-zA-Z]/, "Пароль може містить латинські символи і цифри")
+      .required("Поле не повинне бути пустим"),
+    confirmPassword: yup
+      .string()
+      .min(5, "Пароль повинен містити мініму 5 символів")
+      .oneOf([yup.ref("password")], () => "Паролі повинні співпадати")
+      .required("Поле не повинне бути пустим"),
+  });
+
+  const formik = useFormik({
+    initialValues: init,
+    onSubmit: onFormikSubmit,
+    validationSchema: registerSchema
+  });
+
+  const { values, errors, handleSubmit, handleChange, setFieldValue } = formik;
 
   return (
     <>
       <h1 className="text-center">Реєстрація на сайт</h1>
-      <form onSubmit={onSubmitHandler} className="col-md-6 offset-md-3">
+      <form onSubmit={handleSubmit} className="col-md-6 offset-md-3">
         <InputGroup
           label="Електронна адреса"
           field="email"
-          value={data.email}
-          onChange={onChangeHandler}
+          value={values.email}
+          onChange={handleChange}
           errors={error?.email}
+          error={errors.email}
         />
 
         <div className="row">
@@ -56,16 +83,18 @@ const RegisterPage = () => {
             <InputGroup
               label="Прізвище"
               field="secondName"
-              value={data.secondName}
-              onChange={onChangeHandler}
+              value={values.secondName}
+              onChange={handleChange}
+              error={errors.secondName}
             />
           </div>
           <div className="col-md-6">
             <InputGroup
               label="Ім'я"
               field="firstName"
-              value={data.firstName}
-              onChange={onChangeHandler}
+              value={values.firstName}
+              onChange={handleChange}
+              error={errors.firstName}
             />
           </div>
         </div>
@@ -74,16 +103,18 @@ const RegisterPage = () => {
           label="Оберіть фото для аватар"
           field="photo"
           onSelectFile={(base64) => {
-            setData({ ...data, photo: base64 });
+            setFieldValue("photo", base64);
           }}
           errors={error?.photo}
+          error={errors.photo}
         />
 
         <InputGroup
           label="Телефон"
           field="phone"
-          value={data.phone}
-          onChange={onChangeHandler}
+          value={values.phone}
+          onChange={handleChange}
+          error={errors.phone}
         />
 
         <div className="row">
@@ -92,9 +123,10 @@ const RegisterPage = () => {
               label="Пароль"
               type="password"
               field="password"
-              value={data.password}
-              onChange={onChangeHandler}
+              value={values.password}
+              onChange={handleChange}
               errors={error?.password}
+              error={errors.password}
             />
           </div>
           <div className="col-md-6">
@@ -102,9 +134,10 @@ const RegisterPage = () => {
               label="Підтвердження пароль"
               type="password"
               field="confirmPassword"
-              value={data.confirmPassword}
-              onChange={onChangeHandler}
+              value={values.confirmPassword}
+              onChange={handleChange}
               errors={error?.confirmPassword}
+              error={errors.confirmPassword}
             />
           </div>
         </div>

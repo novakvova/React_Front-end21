@@ -7,13 +7,15 @@ interface InputFileGroupProps extends InputHTMLAttributes<HTMLInputElement> {
   field: string;
   onSelectFile: (base64: string) => void;
   errors?: string[];
+  error?: string|undefined
 }
 
 const InputFileGroup: FC<InputFileGroupProps> = ({
   label = "Оберіть файл",
   field,
   onSelectFile,
-  errors
+  errors,
+  error
 }) => {
   const [selectImage, setSelectImage] = useState<File | null>(null);
 
@@ -21,6 +23,12 @@ const InputFileGroup: FC<InputFileGroupProps> = ({
     const files = e.target.files;
     if (files) {
       const file = files[0];
+      //Перевірка на тип обраного файлу - допустимий тип jpeg, png, gif
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        alert("Не допустимий тип файлу");
+        return;
+      }
       //console.log("Ви обрали файл", file);
       setSelectImage(file);
       const reader = new FileReader();
@@ -51,6 +59,7 @@ const InputFileGroup: FC<InputFileGroupProps> = ({
       <input
         type="file"
         className="d-none"
+        accept="image/jpeg, image/png, image/gif"
         id={field}
         onChange={onChangeFileHandler}
       />
@@ -59,6 +68,11 @@ const InputFileGroup: FC<InputFileGroupProps> = ({
           {errors.map((err, index) => (
             <span key={index}>{err}</span>
           ))}
+        </div>
+      )}
+      {error && (
+        <div className="alert alert-danger">
+          {error}
         </div>
       )}
     </div>
