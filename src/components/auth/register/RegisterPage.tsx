@@ -26,15 +26,19 @@ const RegisterPage = () => {
 
   const onFormikSubmit=async (values: IRegisterPage) => {
     console.log("Formik Submit Form to Server", values);
-     // try{
-    //   const result = await http.post("api/account/register", data);
-    //   console.log("Result server good", result);
-    // } catch(err: any) {
-    //   const error = err.response.data.errors as IRegisterError;
-    //   setError(error);
-    //   console.log("Bad request", err);
-    // }
-    
+     try{
+      const result = await http.post("api/account/register", values);
+      console.log("Result server good", result);
+    } catch(err: any) {
+      const error = err.response.data.errors as IRegisterError;
+      if(error.email)
+      {
+        setFieldError("email", error.email[0]);
+        return;
+      }
+      setError(error);
+      console.log("Bad request", err);
+    }
   }
 
   const registerSchema = yup.object({
@@ -63,7 +67,7 @@ const RegisterPage = () => {
     validationSchema: registerSchema
   });
 
-  const { values, errors, handleSubmit, handleChange, setFieldValue } = formik;
+  const { values, touched, errors, handleSubmit, handleChange, setFieldValue, setFieldError } = formik;
 
   return (
     <>
@@ -76,6 +80,7 @@ const RegisterPage = () => {
           onChange={handleChange}
           errors={error?.email}
           error={errors.email}
+          touched={touched.email}
         />
 
         <div className="row">
@@ -86,6 +91,7 @@ const RegisterPage = () => {
               value={values.secondName}
               onChange={handleChange}
               error={errors.secondName}
+              touched={touched.secondName}
             />
           </div>
           <div className="col-md-6">
@@ -95,6 +101,7 @@ const RegisterPage = () => {
               value={values.firstName}
               onChange={handleChange}
               error={errors.firstName}
+              touched={touched.firstName}
             />
           </div>
         </div>
@@ -107,6 +114,8 @@ const RegisterPage = () => {
           }}
           errors={error?.photo}
           error={errors.photo}
+          touched={touched.photo}
+        
         />
 
         <InputGroup
@@ -115,6 +124,7 @@ const RegisterPage = () => {
           value={values.phone}
           onChange={handleChange}
           error={errors.phone}
+          touched={touched.phone}
         />
 
         <div className="row">
@@ -127,6 +137,7 @@ const RegisterPage = () => {
               onChange={handleChange}
               errors={error?.password}
               error={errors.password}
+              touched={touched.password}
             />
           </div>
           <div className="col-md-6">
@@ -138,6 +149,7 @@ const RegisterPage = () => {
               onChange={handleChange}
               errors={error?.confirmPassword}
               error={errors.confirmPassword}
+              touched={touched.confirmPassword}
             />
           </div>
         </div>
