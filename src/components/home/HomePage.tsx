@@ -41,6 +41,13 @@ const HomePage = () => {
     <>
       <Slider />
       <h1 className="text-center">Головна сторінка</h1>
+      <button className="btn btn-primary">
+        Вхід
+      </button>
+      <button className="btn btn-danger">
+        Вихід
+      </button>
+      <br />
       <Link to="/admin/categories/create" className="btn btn-success">Додати</Link>
       <table className="table">
         <thead>

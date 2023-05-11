@@ -1,6 +1,10 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { IAuthUser } from "../../auth/types";
 
 const DefaultHeader = () => {
+
+  const {isAuth} = useSelector((store: any)=> store.auth as IAuthUser);
   return (
     <>
       <header data-bs-theme="dark">
@@ -27,16 +31,29 @@ const DefaultHeader = () => {
                     Головна
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    Вхід
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/register">
-                    Реєстрація
-                  </Link>
-                </li>
+                {isAuth ? (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/logout">
+                        Вихід
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login">
+                        Вхід
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/register">
+                        Реєстрація
+                      </Link>
+                    </li>
+                  </>
+                )}
+
                 <li className="nav-item">
                   <a className="nav-link disabled">Disabled</a>
                 </li>
