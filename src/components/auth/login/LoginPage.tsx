@@ -4,6 +4,9 @@ import InputGroup from "../../common/InputGroup";
 import { ILoginPage, ILoginPageError, IUser } from "./types";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "../../../helpers/setAuthToken";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AuthUserActionType } from "../types";
 
 const LoginPage = () => {
 
@@ -20,6 +23,8 @@ const LoginPage = () => {
     // console.log("Render Login component", "------SALO----");
 
     //console.log("Дестурктуризація", {...data, password: "123456"});
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     
     const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -30,8 +35,8 @@ const LoginPage = () => {
             const token = resp.data.token as string;
             setAuthToken(token);
             const user = jwt_decode<IUser>(token);
-            console.log("Вхід успішний", token);
-            console.log("Jwt decode", user);
+            dispatch({type: AuthUserActionType.LOGIN_USER});
+            navigate("/");
             
           })
           .catch(badReqeust => {

@@ -1,8 +1,12 @@
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { IAuthUser } from "../../auth/types";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthUserActionType, IAuthUser } from "../../auth/types";
 
 const DefaultHeader = () => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {isAuth} = useSelector((store: any)=> store.auth as IAuthUser);
   return (
@@ -31,10 +35,23 @@ const DefaultHeader = () => {
                     Головна
                   </Link>
                 </li>
-                {isAuth ? (
+                
+
+                <li className="nav-item">
+                  <a className="nav-link disabled">Disabled</a>
+                </li>
+              </ul>
+              <ul className="navbar-nav">
+              {isAuth ? (
                   <>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/logout">
+                      <Link className="nav-link" to="/logout"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          localStorage.removeItem("token");
+                          dispatch({type: AuthUserActionType.LOGOUT_USER});
+                          navigate("/");
+                        }}>
                         Вихід
                       </Link>
                     </li>
@@ -53,22 +70,7 @@ const DefaultHeader = () => {
                     </li>
                   </>
                 )}
-
-                <li className="nav-item">
-                  <a className="nav-link disabled">Disabled</a>
-                </li>
               </ul>
-              <form className="d-flex" role="search">
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button className="btn btn-outline-success" type="submit">
-                  Search
-                </button>
-              </form>
             </div>
           </div>
         </nav>

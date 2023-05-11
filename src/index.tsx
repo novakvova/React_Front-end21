@@ -9,9 +9,11 @@ import { BrowserRouter } from "react-router-dom";
 import setAuthToken from "./helpers/setAuthToken";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { AuthUserActionType } from "./components/auth/types";
 
 if(localStorage.token) {
   setAuthToken(localStorage.token);
+  store.dispatch({type: AuthUserActionType.LOGIN_USER});
 }
 
 const root = ReactDOM.createRoot(

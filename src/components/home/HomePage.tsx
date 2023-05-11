@@ -4,6 +4,7 @@ import { ICategoryItem } from "./types";
 import { APP_ENV } from "../../env";
 import http from "../../http_common";
 import { Link } from "react-router-dom";
+import EclipseWidget from "../common/eclipse";
 
 const HomePage = () => {
   const [list, setList] = useState<ICategoryItem[]>([]);
@@ -35,19 +36,15 @@ const HomePage = () => {
   },[]);
   
   console.log("Render component", APP_ENV);
+
+
   
   
   return (
     <>
+      {/* <EclipseWidget/> */}
       <Slider />
       <h1 className="text-center">Головна сторінка</h1>
-      <button className="btn btn-primary">
-        Вхід
-      </button>
-      <button className="btn btn-danger">
-        Вихід
-      </button>
-      <br />
       <Link to="/admin/categories/create" className="btn btn-success">Додати</Link>
       <table className="table">
         <thead>
