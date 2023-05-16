@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import EclipseWidget from "../common/eclipse";
 
 const HomePage = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [list, setList] = useState<ICategoryItem[]>([]);
 
   // map - перебирає список елементів, як foreach, але при цьому він повертає розмітку (можна використовувати return)
@@ -27,11 +29,13 @@ const HomePage = () => {
 
   useEffect(() => {
     console.log("Working useEffect");
+    setLoading(true);
     http.get<ICategoryItem[]>(`api/categories/list`)
       .then(resp => {
         console.log("Server responce", resp.data); 
         const {data} = resp;
         setList(data);
+        setLoading(false);
       });
   },[]);
   
@@ -42,7 +46,7 @@ const HomePage = () => {
   
   return (
     <>
-      {/* <EclipseWidget/> */}
+      {loading && <EclipseWidget/>}
       <Slider />
       <h1 className="text-center">Головна сторінка</h1>
       <Link to="/admin/categories/create" className="btn btn-success">Додати</Link>

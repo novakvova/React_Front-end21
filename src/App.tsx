@@ -7,6 +7,8 @@ import RegisterPage from "./components/auth/register/RegisterPage";
 import { Route, Routes } from "react-router-dom";
 import DefaultLayout from "./components/containers/default/DefaultLayout";
 import CategoryCreatePage from "./components/admin/categories/create/CategoryCreatePage";
+import AdminLayout from "./components/containers/admin/AdminLayout";
+import CategoriesListPage from "./components/admin/categories/list/CategoriesListPage";
 
 const App = () => {
   return (
@@ -18,8 +20,9 @@ const App = () => {
             <Route path="register" element={<RegisterPage/>} />
           </Route>
 
-          <Route path="/admin" element={<DefaultLayout/>}>
+          <Route path="/admin" element={<AdminLayout/>}>
             <Route path="categories/create" element={<CategoryCreatePage/>} />
+            <Route path="categories/list" element={<CategoriesListPage/>} />
           </Route>
         </Routes>
     </>
