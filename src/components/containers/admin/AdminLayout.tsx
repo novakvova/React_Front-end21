@@ -5,7 +5,7 @@ import AdminSidebar from "./AdminSidebar";
 const AdminLayout = () => {
   return (
     <>
-      {/* <AdminHeader /> */}
+      <AdminHeader />
 
       <div className="container-fluid">
         <div className="row flex-nowrap">
