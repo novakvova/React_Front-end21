@@ -16,7 +16,7 @@ const AdminSidebar = () => {
               >
                 <li className="nav-item">
                   <a href="#" className="nav-link align-middle px-0">
-                    <i className="fs-4 bi-house"></i>{" "}
+                    <i className="fa fa-home fa-2x" aria-hidden="true"></i>{" "}
                     <span className="ms-1 d-none d-sm-inline">Home</span>
                   </a>
                 </li>
