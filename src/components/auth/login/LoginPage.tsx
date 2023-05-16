@@ -35,7 +35,8 @@ const LoginPage = () => {
             const token = resp.data.token as string;
             setAuthToken(token);
             const user = jwt_decode<IUser>(token);
-            dispatch({type: AuthUserActionType.LOGIN_USER});
+            
+            dispatch({type: AuthUserActionType.LOGIN_USER, payload: user});
             navigate("/");
             
           })

@@ -1,5 +1,8 @@
+import { IUser } from "./login/types";
+
 export interface IAuthUser {
-    isAuth: boolean
+    isAuth: boolean,
+    user?: IUser
 }
 
 export enum AuthUserActionType {

@@ -8,7 +8,7 @@ const DefaultHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {isAuth} = useSelector((store: any)=> store.auth as IAuthUser);
+  const {isAuth, user} = useSelector((store: any)=> store.auth as IAuthUser);
   return (
     <>
       <header data-bs-theme="dark">
@@ -44,6 +44,11 @@ const DefaultHeader = () => {
               <ul className="navbar-nav">
               {isAuth ? (
                   <>
+                     <li className="nav-item">
+                      <Link className="nav-link" to="/admin/categories/list">
+                        {user?.name}
+                      </Link>
+                    </li>
                     <li className="nav-item">
                       <Link className="nav-link" to="/logout"
                         onClick={(e) => {
