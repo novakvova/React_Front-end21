@@ -9,6 +9,8 @@ import DefaultLayout from "./components/containers/default/DefaultLayout";
 import CategoryCreatePage from "./components/admin/categories/create/CategoryCreatePage";
 import AdminLayout from "./components/containers/admin/AdminLayout";
 import CategoriesListPage from "./components/admin/categories/list/CategoriesListPage";
+import ProductsListPage from "./components/admin/products/list/ProductsListPage";
+import ProductCreatePage from "./components/admin/products/create/ProductCreatePage";
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
           <Route path="/admin" element={<AdminLayout/>}>
             <Route path="categories/create" element={<CategoryCreatePage/>} />
             <Route path="categories/list" element={<CategoriesListPage/>} />
+            <Route path="products/list" element={<ProductsListPage/>} />
+            <Route path="products/create" element={<ProductCreatePage/>} />
           </Route>
         </Routes>
     </>

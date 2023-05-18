@@ -23,7 +23,7 @@ const CategoryCreatePage = () => {
     console.log("Ми відправляємо на сервер", data);
     try{
       const result = await http.post("api/categories/add", data);
-      navigator("/");
+      navigator("/admin/categories/list");
     } catch(err: any) {
       console.log("Bad request", err);
     }

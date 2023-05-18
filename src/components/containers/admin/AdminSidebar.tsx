@@ -28,6 +28,13 @@ const AdminSidebar = () => {
                   <span className="ms-1 d-none d-sm-inline">Категорії</span>
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link to="/admin/products/list" className="nav-link align-middle px-0">
+                  <i className="fa fa-bars" aria-hidden="true"></i>{" "}
+                  <span className="ms-1 d-none d-sm-inline">Продукти</span>
+                </Link>
+              </li>
            
              
             </ul>
