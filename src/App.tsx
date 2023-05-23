@@ -25,8 +25,10 @@ const App = () => {
           <Route path="/admin" element={<AdminLayout/>}>
             <Route path="categories/create" element={<CategoryCreatePage/>} />
             <Route path="categories/list" element={<CategoriesListPage/>} />
-            <Route path="products/list" element={<ProductsListPage/>} />
-            <Route path="products/create" element={<ProductCreatePage/>} />
+            <Route path="products">
+              <Route index element={<ProductsListPage/>} />
+              <Route path="create" element={<ProductCreatePage/>} />
+            </Route>
           </Route>
         </Routes>
     </>

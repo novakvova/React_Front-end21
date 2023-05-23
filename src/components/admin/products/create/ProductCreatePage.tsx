@@ -4,8 +4,13 @@ import { useFormik } from "formik";
 import InputGroup from "../../../common/InputGroup";
 import { useEffect, useState } from "react";
 import http from "../../../../http_common";
+import InputFileGroup from "../../../common/InputFileGroup";
+import InputFileProductGroup from "../../../common/InputFileProductGroup";
+import { useNavigate } from "react-router-dom";
 
 const ProductCreatePage = () => {
+    
+    const navigate = useNavigate();
 
     const [categories, setCategories] = useState<ICategorySelect[]>([]);
 
@@ -13,7 +18,7 @@ const ProductCreatePage = () => {
       http.get<ICategorySelect[]>("api/categories/list")
         .then(resp => {
             setCategories(resp.data);
-            console.log("categories", resp.data);
+            //console.log("categories", resp.data);
         });
     }, []);
     
@@ -28,7 +33,14 @@ const ProductCreatePage = () => {
   };
 
   const onFormikSubmit=async (values: IProductCreate) => {
-    console.log("Formik submit data", values);
+    //console.log("Formik submit data", values);
+    try {
+      await http.post("api/products/add", values);
+      navigate("..");
+    }catch(error) {
+      console.log("Send data server error");
+      
+    }
   }
 
   const validSchema = yup.object({
@@ -106,6 +118,16 @@ const ProductCreatePage = () => {
             })}
           </select>
         </div>
+
+        <InputFileProductGroup
+          label="Оберіть фото товару"
+          field="imageSelect"
+          onSelectFile={(id) => {
+            setFieldValue("ids", [...values.ids, id]);
+            //console.log("Select image", id);
+            //setData({ ...data, image: base64 });
+          }}
+        />
 
         <button type="submit" className="btn btn-primary">
           Створити товар
