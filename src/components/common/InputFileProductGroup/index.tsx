@@ -11,7 +11,7 @@ interface InputFileProductGroupProps
   field: string;
   onSelectFile: (id: number) => void;
   errors?: string[];
-  error?: string | undefined;
+  error?: string[] |string | undefined;
   touched?: boolean | undefined;
 }
 

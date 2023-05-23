@@ -1,5 +1,3 @@
-import { NumberSchema } from "yup";
-
 export interface IProductCreate {
   name: string;
   priority: number;
