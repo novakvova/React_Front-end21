@@ -28,3 +28,7 @@ export interface IProductSearchResult {
   total: number,
   categoryName: string
 }
+
+export interface IProductSearch {
+  page: number|string
+}
