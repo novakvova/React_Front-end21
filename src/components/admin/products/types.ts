@@ -11,3 +11,20 @@ export interface ICategorySelect {
   id: number,
   title: string
 }
+
+export interface IProductItem {
+  id: number;
+  name: string;
+  categoryName: string;
+  priority: number;
+  description: string;
+  images: string[];
+  price: number;
+}
+export interface IProductSearchResult {
+  products: Array<IProductItem>, //IProductItem[]
+  pages: number,
+  currentPage: number,
+  total: number,
+  categoryName: string
+}
