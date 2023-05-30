@@ -5,6 +5,7 @@ import { APP_ENV } from "../../../../env";
 import http from "../../../../http_common";
 import { IProductSearch, IProductSearchResult } from "../types";
 import * as Scroll from 'react-scroll';
+import ModalDelete from "../../../common/ModalDelete";
 
 const ProductsListPage = () => {
 
@@ -61,6 +62,18 @@ const ProductsListPage = () => {
       </li>
     );
   });
+  const onDeleteProduct=async (id: number) => {
+    try {
+      await http.delete("api/products/delete/"+id);
+      setSearch({page: 1});
+
+    } catch(error) {
+      console.log("Error Delete", error);
+      
+    }
+    //console.log("Delete product: ", id);
+  }
+
 
   const viewList = products.map((item) => {
     return (
@@ -82,12 +95,22 @@ const ProductsListPage = () => {
         </td>
         <td>{item.categoryName}</td>
         <td>{item.description}</td>
+        <td>
+          <ModalDelete
+            id={item.id}
+            text={`Ви дійсно бажаєте видалиати '${item.name}'?`}
+            deleteFunc={onDeleteProduct}
+          />
+        </td>
       </tr>
     );
   });
 
+  
   return (
     <>
+      
+
       <Element name="myScrollToElement"></Element>
       <h1 className="text-center">Продукти</h1>
       <Link to="/admin/products/create" className="btn btn-success">
@@ -101,6 +124,7 @@ const ProductsListPage = () => {
             <th scope="col">Фото</th>
             <th scope="col">Категорія</th>
             <th scope="col">Опис</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{viewList}</tbody>

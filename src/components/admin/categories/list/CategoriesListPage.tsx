@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { APP_ENV } from "../../../../env";
 import http from "../../../../http_common";
+import ModalDelete from "../../../common/ModalDelete";
 import { ICategoryItem } from "../../../home/types";
 
 const CategoriesListPage = () => {
@@ -9,14 +10,40 @@ const CategoriesListPage = () => {
 
   const [list, setList] = useState<ICategoryItem[]>([]);
 
+  const onDeleteCategory=async (id: number) => {
+    try {
+      console.log("delete id", id);
+      
+      await http.delete("api/categories/delete/"+id);
+      setList(list.filter(x=>x.id!=id));
+
+    } catch(error) {
+      console.log("Error Delete", error);
+      
+    }
+    //console.log("Delete product: ", id);
+  }
+
+
   const viewList = list.map((item) => {
     return (
       <tr key={item.id}>
         <th scope="row">{item.id}</th>
         <td>
-          <img src={`${APP_ENV.BASE_URL}images/150_${item.image}`} alt="Якась фотка" width="75" />
+          <img
+            src={`${APP_ENV.BASE_URL}images/150_${item.image}`}
+            alt="Якась фотка"
+            width="75"
+          />
         </td>
         <td>{item.title}</td>
+        <td>
+          <ModalDelete
+            id={item.id}
+            text={`Ви дійсно бажаєте видалиати '${item.title}'?`}
+            deleteFunc={onDeleteCategory}
+          />
+        </td>
       </tr>
     );
   });
@@ -42,6 +69,7 @@ const CategoriesListPage = () => {
             <th scope="col">Id</th>
             <th scope="col">Фото</th>
             <th scope="col">Назва</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
