@@ -6,6 +6,7 @@ import http from "../../../../http_common";
 import { IProductSearch, IProductSearchResult } from "../types";
 import * as Scroll from 'react-scroll';
 import ModalDelete from "../../../common/ModalDelete";
+import parse from "html-react-parser";
 
 const ProductsListPage = () => {
 
@@ -94,7 +95,7 @@ const ProductsListPage = () => {
           })}
         </td>
         <td>{item.categoryName}</td>
-        <td>{item.description}</td>
+        <td>{parse(item.description)}</td>
         <td>
           <ModalDelete
             id={item.id}

@@ -8,6 +8,8 @@ import InputFileGroup from "../../../common/InputFileGroup";
 import InputFileProductGroup from "../../../common/InputFileProductGroup";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
+import { Editor } from "@tinymce/tinymce-react";
+import EditorTiny from "../../../common/EditorTiny";
 
 const ProductCreatePage = () => {
     
@@ -67,10 +69,12 @@ const ProductCreatePage = () => {
   });
   const { values, touched, errors, handleSubmit, handleChange, setFieldValue, setFieldError } = formik;
 
+
+
   return (
     <>
       <h1 className="text-center">Додати продукт</h1>
-      <form onSubmit={handleSubmit} className="col-md-6 offset-md-3">
+      <form onSubmit={handleSubmit} className="col-md-10 offset-md-1">
         <InputGroup
           label="Назва"
           field="name"
@@ -88,14 +92,26 @@ const ProductCreatePage = () => {
           touched={touched.priority}
           type={"number"}
         />
-        <InputGroup
+
+        <EditorTiny
+          value={values.description}
+          label="Опис"
+          field="description"
+          error={errors.description}
+          touched={touched.description}
+          onEditorChange={(text: string)=> {
+            setFieldValue("description", text);
+          }}
+        />
+
+        {/* <InputGroup
           label="Опис"
           field="description"
           value={values.description}
           onChange={handleChange}
           error={errors.description}
           touched={touched.description}
-        />
+        /> */}
 
         <InputGroup
           label="Ціна"
