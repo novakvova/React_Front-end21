@@ -31,6 +31,8 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
   const onRemoveImage = (img: IUploadImageResult) => {
     console.log("Remove image", img);
     setImages(images.filter((x) => x.id !== img.id));
+
+    //setImages(images.splice(img, 1));
     onRemoveFile(img.id);
   };
   //Коли ми обрали файл
