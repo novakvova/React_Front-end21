@@ -7,9 +7,13 @@ export interface IProductCreate {
   ids: number[];
 }
 
+export interface IProductCreateResult {
+  id: number; //ід продукта після створення
+}
+
 export interface ICategorySelect {
-  id: number,
-  title: string
+  id: number;
+  title: string;
 }
 
 export interface IProductItem {
@@ -22,13 +26,13 @@ export interface IProductItem {
   price: number;
 }
 export interface IProductSearchResult {
-  products: Array<IProductItem>, //IProductItem[]
-  pages: number,
-  currentPage: number,
-  total: number,
-  categoryName: string
+  products: Array<IProductItem>; //IProductItem[]
+  pages: number;
+  currentPage: number;
+  total: number;
+  categoryName: string;
 }
 
 export interface IProductSearch {
-  page: number|string
+  page: number | string;
 }
