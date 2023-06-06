@@ -177,6 +177,12 @@ const ProductCreatePage = () => {
             //console.log("Select image", id);
             //setData({ ...data, image: base64 });
           }}
+          onRemoveFile={(id) => {
+            setFieldValue(
+              "ids",
+              values.ids.filter((x) => x !== id)
+            );
+          }}
         />
         <button type="submit" className="btn btn-primary">
           Створити товар

@@ -6,22 +6,22 @@ import { APP_ENV } from "../../../env";
 import http from "../../../http_common";
 import { config } from "./editorConfig";
 
+//Властивості, які приймає компонент
 interface IEditorProps extends IAllProps {
-    label: string;
-    field: string;
-    error?: string|undefined;
-    touched?: boolean|undefined;
+  //тут міститься метод onEditorChange - який відслідковує зміни в едіторі
+  label: string; //Назва самого інпута
+  field: string; //ідентифікатор інпута
+  error?: string | undefined;
+  touched?: boolean | undefined;
 }
 
 const EditorTiny: FC<IEditorProps> = ({
-    label,
-    field,
-    error,
-    touched,
-    ...props
+  label,
+  field,
+  error,
+  touched,
+  ...props //Усі інши параметри, наприклад onEditorChange
 }) => {
-
-
   return (
     <div className="mb-3">
       <label htmlFor={field} className="form-label">
@@ -38,10 +38,10 @@ const EditorTiny: FC<IEditorProps> = ({
           apiKey="vxipzwpxcycu8xgp0i2mttz5bjf4rx1sgepa48esl7clwgue"
           // initialValue="<p>This is the initial content of the editor</p>"
           init={{
-            height: 500,
-            language: "uk",
-            menubar: true,
-            images_file_types: "jpg,jpeg",
+            height: 500, //висота самого інтупа
+            language: "uk", //мова панелі
+            menubar: true, //показувать меню
+            images_file_types: "jpg,jpeg", //формати файлі, які можна обирать - фото
             block_unsupported_drop: false,
             menu: {
               file: {
@@ -91,43 +91,48 @@ const EditorTiny: FC<IEditorProps> = ({
             ],
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-
+            //Дає можливість завантажувать фото на серве
+            //Зявляється кнопка обрати фото
             file_picker_callback: (cb, value, meta) => {
               const input = document.createElement("input");
               input.setAttribute("type", "file");
               input.setAttribute("accept", "image/*");
-              input.addEventListener('change', (e: any) => {
+              input.addEventListener("change", (e: any) => {
                 const files = e.target.files;
+                //Перевіряємо, чи ми обрали файли
                 if (files) {
-                  const file = files[0];
+                  const file = files[0]; //Обирати можна декільа файлів, але ми беремо 1 файл
                   //Перевірка на тип обраного файлу - допустимий тип jpeg, png, gif
-                  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
                   if (!allowedTypes.includes(file.type)) {
                     alert("Не допустимий тип файлу");
                     return;
                   }
-                  //console.log("Ви обрали файл", file);
-                  
+                  //FileReader = дозволяє прочитати файл на клієнті у Base64 - формат
                   const reader = new FileReader();
-                  reader.readAsDataURL(file);
+                  reader.readAsDataURL(file); // у FileReader - передаємо наш файл
                   reader.onload = function () {
-                    const base64=reader.result as string;
-                    http.post("api/products/upload", {image: base64})
-                        .then(resp => {
-                            const fileName = APP_ENV.BASE_URL+"images/600_"+resp.data.name;
-                            cb(fileName);
-                        });
+                    //Очікуємо події, коли файл завантажиться у Reader
+                    const base64 = reader.result as string; //Отримуємо base64 даного айлу
+                    http
+                      .post("api/products/upload", { image: base64 }) //посилаємо запит на сервер для збереження файлу
+                      .then((resp) => {
+                        //Якщо результат був усешіний
+                        const fileName =
+                          APP_ENV.BASE_URL + "images/600_" + resp.data.name; //Формуємо шлях до файлу із розміром файлу 600
+                        cb(fileName); //відображаємо даний шлях у нашому вікні самого editora
+                      });
                   };
                 }
-                e.target.value = "";
+                e.target.value = ""; //скидаємо значення із інпута- щоб він мав пусте значення
               });
-              
-              input.click();
+
+              input.click(); //клікаємо по інтупу, щоб обрати файл на вашому ПК.
             },
           }}
           //outputFormat="html"
           //toolbar="code"
-          {...props}
+          {...props} //до Eдітора додаємо усі властивості в вказіник onEditorChange
         />
       </div>
       {touched && error && <div className="invalid-feedback">{error}</div>}

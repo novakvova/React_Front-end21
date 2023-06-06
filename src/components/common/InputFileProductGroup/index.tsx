@@ -9,23 +9,31 @@ interface InputFileProductGroupProps
   extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   field: string;
-  onSelectFile: (id: number) => void;
+  onRemoveFile: (id: number) => void; //обробник для видалення фото по id в батька
+  onSelectFile: (id: number) => void; //Повертаємо id - фото, яке збережено на сервері для товару
   errors?: string[];
-  error?: string[] |string | undefined;
+  error?: string[] | string | undefined;
   touched?: boolean | undefined;
 }
 
 const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
   label = "Оберіть файл",
   field,
+  onRemoveFile,
   onSelectFile,
   errors,
   error,
   touched,
 }) => {
   //Набір фото, які обрав користувач
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<IUploadImageResult[]>([]); //Список імен файлів, які ми будемо відображати в даному компоненті
 
+  const onRemoveImage = (img: IUploadImageResult) => {
+    console.log("Remove image", img);
+    setImages(images.filter((x) => x.id !== img.id));
+    onRemoveFile(img.id);
+  };
+  //Коли ми обрали файл
   const onChangeFileHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
@@ -39,17 +47,19 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = async () => {
+        //обєкт, який ми вантажимо на сервер
         const upload: IUploadImage = {
           image: reader.result as string,
         };
         try {
+          //відправляємо base64 на сервер і очікуємо результат
           const dataServer = await http.post<IUploadImageResult>(
             "api/products/upload",
             upload
           );
-          const imageServer = dataServer.data;
-          setImages([...images, imageServer.name]);
-          onSelectFile(imageServer.id);
+          const imageServer = dataServer.data; //Якщо результат, був успішний ми отримуємо об'єкт, який включає назву файлу та id фото
+          setImages([...images, imageServer]); //зберігаємо назву фото для відображення у списку
+          onSelectFile(imageServer.id); //передаємо через callback - id фото для даного товару
         } catch (problem) {
           console.log("Error upload image to server");
         }
@@ -63,7 +73,6 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
   return (
     <div className="mb-3">
       <div className="row">
-
         <div className="col-md-4">
           <label htmlFor={field} className="form-label">
             <h6>{label}</h6>
@@ -71,7 +80,7 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
             <img
               width="80%"
               className="img-fluid"
-              src={plusImage}
+              src={plusImage} //фото, по якому натискаємо і можемо вибрати файл
               style={{ cursor: "pointer" }}
             />
           </label>
@@ -79,23 +88,29 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
           <input
             type="file"
             className="d-none"
-            accept="image/jpeg, image/png, image/gif"
+            accept="image/jpeg, image/png, image/gif" //для інпута є обмеження по формату файлу
             id={field}
-            onChange={onChangeFileHandler}
+            onChange={onChangeFileHandler} //Обробник, який спрацьовує, коли ми обрали файл
           />
         </div>
-
-        {images.map(item => (
-          <div key={item} className="col-md-4 mt-5">
+        {/* відображаємо список файлів, які ми обрали */}
+        {images.map((item) => (
+          <div key={item.id} className="col-md-4 mt-5">
+            <div>
+              <i
+                className="fa fa-times fa-2x fa-fw text-danger"
+                style={{ cursor: "pointer" }}
+                onClick={() => onRemoveImage(item)}
+              ></i>
+            </div>
             <img
               width="80%"
               className="img-fluid"
-              src={`${APP_ENV.BASE_URL}images/300_${item}`}
+              src={`${APP_ENV.BASE_URL}images/300_${item.name}`}
             />
           </div>
         ))}
       </div>
-
 
       {errors && (
         <div className="alert alert-danger">
