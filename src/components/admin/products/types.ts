@@ -14,6 +14,7 @@ export interface IProductCreateResult {
 export interface ICategorySelect {
   id: number;
   title: string;
+  urlSlug: string;
 }
 
 export interface IProductItem {
@@ -34,5 +35,7 @@ export interface IProductSearchResult {
 }
 
 export interface IProductSearch {
+  name: string;
+  categorySlug: string;
   page: number | string;
 }
