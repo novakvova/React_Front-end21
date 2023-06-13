@@ -11,26 +11,30 @@ import AdminLayout from "./components/containers/admin/AdminLayout";
 import CategoriesListPage from "./components/admin/categories/list/CategoriesListPage";
 import ProductsListPage from "./components/admin/products/list/ProductsListPage";
 import ProductCreatePage from "./components/admin/products/create/ProductCreatePage";
+import ProductEditPage from "./components/admin/products/edit/ProductEditPage";
 
 const App = () => {
   return (
     <>
-        <Routes>
-          <Route path="/" element={<DefaultLayout/>}>
-            <Route index element={<HomePage />} />
-            <Route path="login" element={<LoginPage/>} />
-            <Route path="register" element={<RegisterPage/>} />
-          </Route>
+      <Routes>
+        <Route path="/" element={<DefaultLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+        </Route>
 
-          <Route path="/admin" element={<AdminLayout/>}>
-            <Route path="categories/create" element={<CategoryCreatePage/>} />
-            <Route path="categories/list" element={<CategoriesListPage/>} />
-            <Route path="products">
-              <Route index element={<ProductsListPage/>} />
-              <Route path="create" element={<ProductCreatePage/>} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="categories/create" element={<CategoryCreatePage />} />
+          <Route path="categories/list" element={<CategoriesListPage />} />
+          <Route path="products">
+            <Route index element={<ProductsListPage />} />
+            <Route path="create" element={<ProductCreatePage />} />
+            <Route path="edit">
+              <Route path=":id" element={<ProductEditPage />} />
             </Route>
           </Route>
-        </Routes>
+        </Route>
+      </Routes>
     </>
   );
 };

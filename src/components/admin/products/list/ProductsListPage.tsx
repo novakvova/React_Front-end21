@@ -137,6 +137,10 @@ const ProductsListPage = () => {
             text={`Ви дійсно бажаєте видалиати '${item.name}'?`}
             deleteFunc={onDeleteProduct}
           />
+          &nbsp;
+          <Link to={`edit/${item.id}`} className="btn btn-success">
+            Змінити
+          </Link>
         </td>
       </tr>
     );

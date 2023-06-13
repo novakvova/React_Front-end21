@@ -39,3 +39,13 @@ export interface IProductSearch {
   categorySlug: string;
   page: number | string;
 }
+
+export interface IProductEdit {
+  id: number | string | undefined;
+  name: string;
+  priority: number;
+  categoryId: number;
+  price: number;
+  description: string;
+  ids: number[];
+}
