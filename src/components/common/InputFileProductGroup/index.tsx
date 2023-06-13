@@ -2,6 +2,7 @@ import { ChangeEvent, FC, InputHTMLAttributes, useState } from "react";
 import plusImage from "../../../assets/plus.png";
 import { APP_ENV } from "../../../env";
 import http from "../../../http_common";
+import { IProductImageItem } from "../../admin/products/types";
 import "./style.css";
 import { IUploadImage, IUploadImageResult } from "./types";
 
@@ -14,6 +15,7 @@ interface InputFileProductGroupProps
   errors?: string[];
   error?: string[] | string | undefined;
   touched?: boolean | undefined;
+  imgView?: IProductImageItem[]; //Масив фото, який ми хочемо відобразить
 }
 
 const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
@@ -24,6 +26,7 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
   errors,
   error,
   touched,
+  imgView = [],
 }) => {
   //Набір фото, які обрав користувач
   const [images, setImages] = useState<IUploadImageResult[]>([]); //Список імен файлів, які ми будемо відображати в даному компоненті
@@ -95,6 +98,25 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
             onChange={onChangeFileHandler} //Обробник, який спрацьовує, коли ми обрали файл
           />
         </div>
+
+        {/* фото, які є при зміні товару */}
+        {imgView.map((item) => (
+          <div key={item.id} className="col-md-4 mt-5">
+            <div>
+              {/* <i
+                className="fa fa-times fa-2x fa-fw text-danger"
+                style={{ cursor: "pointer" }}
+                onClick={() => onRemoveImage(item)}
+              ></i> */}
+            </div>
+            <img
+              width="80%"
+              className="img-fluid"
+              src={`${APP_ENV.BASE_URL}images/300_${item.name}`}
+            />
+          </div>
+        ))}
+
         {/* відображаємо список файлів, які ми обрали */}
         {images.map((item) => (
           <div key={item.id} className="col-md-4 mt-5">

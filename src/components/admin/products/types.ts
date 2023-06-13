@@ -49,3 +49,18 @@ export interface IProductEdit {
   description: string;
   ids: number[];
 }
+
+export interface IProductImageItem {
+  id: number;
+  name: string;
+}
+
+export interface IProductGetItem {
+  id: number | string | undefined;
+  name: string;
+  priority: number;
+  categoryId: number;
+  price: number;
+  description: string;
+  images: IProductImageItem[];
+}
