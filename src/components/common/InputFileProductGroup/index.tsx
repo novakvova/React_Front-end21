@@ -1,4 +1,10 @@
-import { ChangeEvent, FC, InputHTMLAttributes, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  InputHTMLAttributes,
+  useEffect,
+  useState,
+} from "react";
 import plusImage from "../../../assets/plus.png";
 import { APP_ENV } from "../../../env";
 import http from "../../../http_common";
@@ -29,9 +35,15 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
   imgView = [],
 }) => {
   //Набір фото, які обрав користувач
-  const [images, setImages] = useState<IUploadImageResult[]>([]); //Список імен файлів, які ми будемо відображати в даному компоненті
+  const [images, setImages] = useState<IProductImageItem[]>([]); //Список імен файлів, які ми будемо відображати в даному компоненті
 
-  const onRemoveImage = (img: IUploadImageResult) => {
+  useEffect(() => {
+    setImages(imgView);
+  }, [imgView]);
+
+  //console.log("----images-----", imgView);
+
+  const onRemoveImage = (img: IProductImageItem) => {
     console.log("Remove image", img);
     setImages(images.filter((x) => x.id !== img.id));
 
@@ -58,7 +70,7 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
         };
         try {
           //відправляємо base64 на сервер і очікуємо результат
-          const dataServer = await http.post<IUploadImageResult>(
+          const dataServer = await http.post<IProductImageItem>(
             "api/products/upload",
             upload
           );
@@ -98,24 +110,6 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
             onChange={onChangeFileHandler} //Обробник, який спрацьовує, коли ми обрали файл
           />
         </div>
-
-        {/* фото, які є при зміні товару */}
-        {imgView.map((item) => (
-          <div key={item.id} className="col-md-4 mt-5">
-            <div>
-              {/* <i
-                className="fa fa-times fa-2x fa-fw text-danger"
-                style={{ cursor: "pointer" }}
-                onClick={() => onRemoveImage(item)}
-              ></i> */}
-            </div>
-            <img
-              width="80%"
-              className="img-fluid"
-              src={`${APP_ENV.BASE_URL}images/300_${item.name}`}
-            />
-          </div>
-        ))}
 
         {/* відображаємо список файлів, які ми обрали */}
         {images.map((item) => (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import http from "../../../../http_common";
 import {
   ICategorySelect,
@@ -15,6 +15,7 @@ import classNames from "classnames";
 import InputFileProductGroup from "../../../common/InputFileProductGroup";
 
 const ProductEditPage = () => {
+  const navigator = useNavigate();
   const { id } = useParams();
   //Зберігаємо списко категорій
   const [categories, setCategories] = useState<ICategorySelect[]>([]);
@@ -23,7 +24,7 @@ const ProductEditPage = () => {
 
   //створили конкретни екземлеяр на основі нашого інтерфейсу
   const init: IProductEdit = {
-    id: id,
+    id: id ? Number(id) : 0,
     name: "",
     priority: 0,
     categoryId: 0,
@@ -35,7 +36,19 @@ const ProductEditPage = () => {
   //Дані, які приходять після валіації із форміка
   const onFormikSubmit = async (values: IProductEdit) => {
     //Вивовдимо дані на консоль, щоб їх побачить
-    console.log("Formik submit data", values);
+    console.log("Formik submit data-----------------", values);
+    try {
+      //запит на оновлення продукта
+      const result = await http.put("api/products/edit", values);
+      //виводимо id продукта із БД
+      console.log("Server Edit is good");
+
+      //переходимо до списку продуктів у нашому випадку на один рівень назад
+      navigator("../..");
+    } catch (error) {
+      //якщо запит на сервер буде не успішний
+      console.log("Send data server error"); //вивдимо помилку на консоль
+    }
   };
 
   //Схема валідації даних
@@ -83,7 +96,11 @@ const ProductEditPage = () => {
         setFieldValue("description", product.description);
         setFieldValue("price", product.price);
         setFieldValue("priority", product.priority);
-        setFieldValue("ids", [product.images.map((x) => x.id)]);
+        let ids = [];
+        for (let i = 0; i < product.images.length; i++) {
+          ids.push(product.images[i].id);
+        }
+        setFieldValue("ids", ids);
         setImgViews(product.images);
         //setFieldValue("ids", product.priority);
       });

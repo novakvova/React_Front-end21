@@ -41,7 +41,7 @@ export interface IProductSearch {
 }
 
 export interface IProductEdit {
-  id: number | string | undefined;
+  id: number;
   name: string;
   priority: number;
   categoryId: number;
