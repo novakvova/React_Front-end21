@@ -29,9 +29,9 @@ const HomePage = () => {
         {home?.products.map((p) => (
           <div className="card col-md-3 h-100">
             <img
-              style={{ width: "100%", height: "150px", objectFit: "contain" }}
+              style={{ width: "100%", height: "250px", objectFit: "contain" }}
               src={`${APP_ENV.BASE_URL}images/300_${p.images[0]}`}
-              className="card-img-top"
+              className="card-img-top p-2"
               alt="Козачка"
             />
             <div className="card-body">
