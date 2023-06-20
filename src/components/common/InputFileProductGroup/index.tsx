@@ -38,7 +38,7 @@ const InputFileProductGroup: FC<InputFileProductGroupProps> = ({
   const [images, setImages] = useState<IProductImageItem[]>([]); //Список імен файлів, які ми будемо відображати в даному компоненті
 
   useEffect(() => {
-    setImages(imgView);
+    if (imgView.length !== 0) setImages(imgView);
   }, [imgView]);
 
   //console.log("----images-----", imgView);

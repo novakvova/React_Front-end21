@@ -35,7 +35,7 @@ const EditorTiny: FC<IEditorProps> = ({
         )}
       >
         <Editor
-          apiKey="vxipzwpxcycu8xgp0i2mttz5bjf4rx1sgepa48esl7clwgue"
+          apiKey="l4ipj5d2e673xkfnuw4xjsxgaqqu4f45uf8qoh4az9o28mzr"
           // initialValue="<p>This is the initial content of the editor</p>"
           init={{
             height: 500, //висота самого інтупа

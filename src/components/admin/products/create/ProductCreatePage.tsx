@@ -171,6 +171,7 @@ const ProductCreatePage = () => {
           field="imageSelect"
           error={errors.ids} //якщо є помилки, то буде їх показувать
           touched={touched.ids} //якщо нажали Submit
+          imgView={[]}
           onSelectFile={(id) => {
             // callback - метод, який вертає id - зображення товару, який було збережено на серваку
             setFieldValue("ids", [...values.ids, id]); //додаємо у колекції новий елемент id - фото товару
