@@ -12,6 +12,7 @@ import CategoriesListPage from "./components/admin/categories/list/CategoriesLis
 import ProductsListPage from "./components/admin/products/list/ProductsListPage";
 import ProductCreatePage from "./components/admin/products/create/ProductCreatePage";
 import ProductEditPage from "./components/admin/products/edit/ProductEditPage";
+import ForbiddenPage from "./pages/403/ForbiddenPage";
 
 const App = () => {
   return (
@@ -21,6 +22,10 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+        </Route>
+
+        <Route path="/pages">
+          <Route path="403" element={<ForbiddenPage/>}/>
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
