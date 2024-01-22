@@ -1,10 +1,8 @@
 import { Editor, IAllProps } from "@tinymce/tinymce-react";
 import classNames from "classnames";
-import { env } from "process";
-import { ChangeEvent, FC } from "react";
+import { FC } from "react";
 import { APP_ENV } from "../../../env";
 import http from "../../../http_common";
-import { config } from "./editorConfig";
 
 //Властивості, які приймає компонент
 interface IEditorProps extends IAllProps {
